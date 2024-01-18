@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="forest">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.6.0/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <title>TP 01 - Raffael Di Pietro</title>
+    
+</head>
+<body>
+    <form id="myForm" class="flex flex-col gap-6 p-3 items-center justify-center">
+        <div class="flex flex-col md:flex-row gap-4 md:justify-center">
+            <div class="grid card bg-base-300 rounded-box place-items-center p-6">
+                <div class="flex flex-col gap-4">
+                    <p class="">Présentez vous !</p>
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <input type="text" name="lastname" placeholder="Nom" class="input input-bordered w-full max-w-sm grow-0" />
+                
+                        <input type="text" name="firstname" placeholder="Prénom" class="input input-bordered w-full max-w-sm grow-0" />
+                    </div>
+            
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <select name="civil" class="select select-bordered w-full max-w-sm grow-0">
+                            <option>Mr</option>
+                            <option>Mme</option>
+                            <option>Autre</option>
+                        </select>
+                        <input type="text" placeholder="Adresse" class="input input-bordered w-full max-w-sm grow-0	" />
+                    </div>
+        
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <input type="text" name="zipCode" placeholder="Code postale" class="input input-bordered w-full max-w-sm grow-0" />
+                        
+                        <input type="text" name="city" placeholder="Ville" class="input input-bordered w-full md:max-w-full grow-0" />
+                    </div>
+                    <input type="tel" name="tel" placeholder="Numéro de téléphone" class="input input-bordered w-full max-w-sm md:max-w-full" />
+                </div>
+            </div>
+    
+            <div class="divider divider-neutral md:divider-horizontal"></div> 
+            
+            <div class="grid card bg-base-300 rounded-box place-items-center p-6">
+                <div class="flex flex-col gap-4">
+                    <p>Informations de connexion</p>
+                    <label class="form-control w-full max-w-xs">
+                        <input type="text" name="login" placeholder="login" class="input input-bordered w-full max-w-sm" />
+                        <span id="login-error" class="label-text-alt text-error"></span>
+                    </label>
+                    <label class="form-control w-full max-w-xs">
+                        <input type="password" name="password" placeholder="mot de passe" class="input input-bordered w-full max-w-sm" />
+                        <span id="password-error" class="label-text-alt text-error"></span>
+                    </label>
+                    <label class="form-control w-full max-w-xs">
+                        <input type="password" name="passwordConfirm" placeholder="confirmation" class="input input-bordered w-full max-w-sm" />
+                        <span id="password-confirm-error" class="label-text-alt text-error"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+  
+        <button type="submit" class="btn btn-primary text-white">Envoyer</button>
+    </form>
+
+    <div id="success" class="hidden w-full h-screen flex justify-center items-center">
+        <div class="hero min-h-screen bg-base-200">
+            <div class="hero-content text-center">
+              <div class="max-w-md">
+                <h1 class="text-5xl font-bold">Vous avez réussi à vous connecter !</h1>
+                <p class="py-6">C'était une sacrée épreuve hein ?</p>
+                <button id="finalClick" class="btn btn-primary">Pour la suite, cliquez ici !</button>
+              </div>
+            </div>
+          </div>
+    </div>
+
+    <script>
+        const getFormData = (event) => {
+            let form = event.target.elements;
+            let formData = {};
+
+            // Itérer sur les éléments du formulaire
+            for (let i = 0; i < form.length; i++) {
+                let input = form[i];
+
+                // Ignorer les boutons de soumission et les éléments sans valeur
+                if (input.type !== 'submit' && input.value !== undefined && input.name) {
+                    formData[input.name] = input.value;
+                }
+            }
+
+            return formData;
+        }
+
+        document.getElementById("finalClick").addEventListener("click", () => {
+            window.location.href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        })
+
+        document.getElementById("myForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            console.log("heeey")
+
+            const formData = getFormData(e)
+            console.log(formData)
+
+            let isError = false;
+
+            if (formData.password.length < 8) {
+                document.getElementById("password-error").innerHTML = "Le mot de passe doit contenir au moins 8 caractères"
+                isError = true;
+            } else {
+                document.getElementById("password-error").innerHTML = ""
+
+                if (formData.password !== formData.passwordConfirm) {
+                    document.getElementById("password-error").innerHTML = "Les mots de passe ne correspondent pas"
+                    document.getElementById("password-confirm-error").innerHTML = "Les mots de passe ne correspondent pas"
+                    isError = true;
+                } else {
+                    document.getElementById("password-error").innerHTML = ""
+                    document.getElementById("password-confirm-error").innerHTML = ""
+                }
+            }
+
+            if(formData.login.length < 5) {
+                document.getElementById("login-error").innerHTML = "Le login doit contenir au moins 5 caractères"
+                isError = true;
+            } else {
+                document.getElementById("login-error").innerHTML = ""
+            }
+
+            if (!isError) {
+                document.getElementById("success").classList.remove("hidden")
+                document.getElementById("myForm").classList.add("hidden")
+            }
+
+        });
+    </script>
+</body>
+</html>
